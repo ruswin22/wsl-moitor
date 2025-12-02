@@ -1,8 +1,9 @@
-from fastapi import FastAPI
+# backend/app/main.py
+from fastapi import FastAPI, Response
 from fastapi.middleware.cors import CORSMiddleware
-from .metrics import get_all_metrics
+from .metrics import prometheus_metrics_response
 
-app = FastAPI()
+app = FastAPI(title="WSL Monitor Exporter")
 
 app.add_middleware(
     CORSMiddleware,
@@ -14,8 +15,9 @@ app.add_middleware(
 
 @app.get("/")
 def root():
-    return {"message": "WSL Monitor Backend Running"}
+    return {"message": "WSL Monitor Exporter Running"}
 
 @app.get("/metrics")
 def metrics():
-    return get_all_metrics()
+    content = prometheus_metrics_response()
+    return Response(content, media_type="text/plain; version=0.0.4; charset=utf-8")

@@ -22,6 +22,7 @@ backend/.mypy_cache/
 backend/.venv/
 backend/venv/
 backend/env/
+backend/backendEnv/
 
 # Python build artifacts
 backend/build/
