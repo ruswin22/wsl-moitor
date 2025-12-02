@@ -1,7 +1,3 @@
-export interface CpuMetrics {
-  percent: number;
-}
-
 export interface MemoryMetrics {
   total: number;
   used: number;
@@ -20,7 +16,7 @@ export interface NetworkMetrics {
 }
 
 export interface MetricsResponse {
-  cpu: number | CpuMetrics;
+  cpu: number;
   memory: MemoryMetrics;
   disk: DiskMetrics;
   network: NetworkMetrics;
