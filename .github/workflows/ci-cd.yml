@@ -7,8 +7,9 @@ on:
     branches: ["main"]
 
 jobs:
+
   # ===============================
-  # Backend CI (Python FastAPI)
+  # Backend CI (FastAPI Prometheus Exporter)
   # ===============================
   backend-ci:
     name: Backend Tests
@@ -39,48 +40,31 @@ jobs:
         run: pytest || echo "No backend tests yet"
 
   # ===============================
-  # Frontend CI (React + TypeScript)
+  # Prometheus Config Validation
   # ===============================
-  frontend-ci:
-    name: Frontend Build
+  prometheus-validate:
+    name: Prometheus Config Check
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: frontend
+    needs: [backend-ci]
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      
+      - name: Install Prometheus tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y prometheus
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Cache node_modules
-        uses: actions/cache@v3
-        with:
-          path: frontend/node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('frontend/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build frontend
-        run: npm run build
-
-      - name: Type check
-        run: npm run type-check || echo "No type-check script defined"
+      - name: Validate Prometheus config
+        run: promtool check config prometheus/prometheus.yml
 
   # ===============================
-  # Docker Build Test (Optional)
+  # Docker Build Test (Backend only)
   # ===============================
   docker-build:
     name: Docker Build Validation
     runs-on: ubuntu-latest
-    needs: [backend-ci, frontend-ci]
+    needs: [backend-ci, prometheus-validate]
 
     steps:
       - name: Checkout repository
@@ -89,5 +73,6 @@ jobs:
       - name: Build backend Docker image
         run: docker build -t wsl-monitor-backend ./backend
 
-      - name: Build frontend Docker image
-        run: docker build -t wsl-monitor-frontend ./frontend
+      # Optional: Validate docker-compose syntax
+      - name: Validate docker-compose
+        run: docker compose -f docker-compose.yml config
