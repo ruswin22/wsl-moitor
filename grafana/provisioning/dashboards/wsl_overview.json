@@ -1,0 +1,39 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "panels": [
+    {
+      "type": "gauge",
+      "title": "CPU % (wsl_cpu_percent)",
+      "gridPos": {"x": 0, "y": 0, "w": 12, "h": 6},
+      "targets": [
+        {"expr": "wsl_cpu_percent", "refId": "A"}
+      ]
+    },
+    {
+      "type": "gauge",
+      "title": "Memory % (derived)",
+      "gridPos": {"x": 12, "y": 0, "w": 12, "h": 6},
+      "targets": [
+        {
+          "expr": "100 * (wsl_memory_used_bytes / wsl_memory_total_bytes)",
+          "refId": "B"
+        }
+      ]
+    },
+    {
+      "type": "graph",
+      "title": "Network Sent (bytes)",
+      "gridPos": {"x": 0, "y": 6, "w": 12, "h": 6},
+      "targets": [{"expr": "rate(wsl_network_bytes_sent[1m])", "refId": "C"}]
+    },
+    {
+      "type": "graph",
+      "title": "Disk Used (bytes)",
+      "gridPos": {"x": 12, "y": 6, "w": 12, "h": 6},
+      "targets": [{"expr": "wsl_disk_used_bytes", "refId": "D"}]
+    }
+  ],
+  "title": "WSL Overview"
+}
