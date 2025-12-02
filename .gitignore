@@ -1,0 +1,67 @@
+# ===========================
+# Global
+# ===========================
+.DS_Store
+.env
+.env.*
+*.log
+*.tmp
+*.swp
+
+# ===========================
+# Python (Backend)
+# ===========================
+backend/__pycache__/
+backend/**/*.pyc
+backend/**/*.pyo
+backend/**/*.pyd
+backend/.pytest_cache/
+backend/.mypy_cache/
+
+# Virtual environments
+backend/.venv/
+backend/venv/
+backend/env/
+
+# Python build artifacts
+backend/build/
+backend/dist/
+backend/*.egg-info/
+backend/.eggs/
+backend/pip-wheel-metadata/
+
+# FastAPI / Uvicorn
+backend/*.db
+backend/*.sqlite
+backend/instance/
+backend/uploads/
+
+# ===========================
+# Node / React (Frontend)
+# ===========================
+frontend/node_modules/
+frontend/.cache/
+frontend/dist/
+frontend/build/
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# ===========================
+# VS Code
+# ===========================
+.vscode/
+.history/
+
+# ===========================
+# Docker
+# ===========================
+**/docker-compose.override.yml
+**/*.dockerfile.swp
+
+# ===========================
+# OS / Editor files
+# ===========================
+Thumbs.db
+ehthumbs.db
+*.orig
